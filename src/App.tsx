@@ -19,9 +19,20 @@ import {
   Users,
   Award,
   Zap,
+  PhoneCall,
 } from 'lucide-react';
 
-const WHATSAPP_LINK = 'https://wa.me/2347037291509?text=Hello%20Wisdom%2C%20I%27m%20interested%20in%20your%20Affiliate%20Marketing%20program.%20Please%20send%20me%20more%20details.';
+// Custom WhatsApp links with unique messages for each CTA
+const WA_BASE = 'https://wa.me/2347037291509?text=';
+const WA_HEADER = WA_BASE + encodeURIComponent('Hi Wisdom, I want to join your Affiliate Marketing program. Please send me details on how to get started.');
+const WA_HERO = WA_BASE + encodeURIComponent('Hello Wisdom, I saw your website and I\'m ready to start learning affiliate marketing. Please guide me on the next steps.');
+const WA_SERVICE = WA_BASE + encodeURIComponent('Hi Wisdom, I\'m interested in learning more about your training programs. Can you share more details?');
+const WA_CONTACT = WA_BASE + encodeURIComponent('Hi Wisdom, I\'m ready to start my journey! Please enroll me in your Affiliate Marketing program.');
+const WA_FOOTER = WA_BASE + encodeURIComponent('Hi Wisdom, I\'d like to connect with you about your Affiliate Marketing program.');
+const WA_TESTIMONIAL = WA_BASE + encodeURIComponent('Hi Wisdom, I saw the success stories on your website and I want to be next! Please tell me how to join.');
+
+const PHONE_NUMBER = '07037291509';
+const PHONE_INTL = '+2347037291509';
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -61,10 +72,17 @@ function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-3">
             <a
-              href={WHATSAPP_LINK}
+              href={`tel:${PHONE_INTL}`}
+              className="flex items-center space-x-2 text-gold border border-gold/40 hover:bg-gold/10 transition-all px-4 py-2 rounded-full text-sm font-semibold"
+            >
+              <PhoneCall size={16} />
+              <span>Call Now</span>
+            </a>
+            <a
+              href={WA_HEADER}
               target="_blank"
               rel="noopener noreferrer"
               className="gradient-gold text-dark font-semibold px-6 py-2.5 rounded-full text-sm hover:opacity-90 transition-opacity shadow-lg shadow-gold/20"
@@ -98,10 +116,17 @@ function Header() {
               </a>
             ))}
             <a
-              href={WHATSAPP_LINK}
+              href={`tel:${PHONE_INTL}`}
+              className="flex items-center justify-center space-x-2 text-gold border border-gold/40 hover:bg-gold/10 transition-all px-6 py-3 rounded-full text-sm font-semibold mt-2"
+            >
+              <PhoneCall size={16} />
+              <span>Call Now</span>
+            </a>
+            <a
+              href={WA_HEADER}
               target="_blank"
               rel="noopener noreferrer"
-              className="block gradient-gold text-dark font-semibold px-6 py-3 rounded-full text-center text-sm mt-4"
+              className="block gradient-gold text-dark font-semibold px-6 py-3 rounded-full text-center text-sm mt-2"
             >
               Join Now
             </a>
@@ -150,7 +175,7 @@ function HeroSection() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href={WHATSAPP_LINK}
+                href={WA_HERO}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="gradient-gold text-dark font-bold px-8 py-4 rounded-full text-center text-base hover:opacity-90 transition-all shadow-lg shadow-gold/30 animate-pulse-gold flex items-center justify-center space-x-2"
@@ -159,11 +184,11 @@ function HeroSection() {
                 <span>Start Learning Today</span>
               </a>
               <a
-                href="#testimonials"
+                href={`tel:${PHONE_INTL}`}
                 className="border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-full text-center text-base hover:border-gold hover:text-gold transition-all flex items-center justify-center space-x-2"
               >
-                <Star size={20} />
-                <span>View Success Stories</span>
+                <PhoneCall size={20} />
+                <span>Call Us Directly</span>
               </a>
             </div>
 
@@ -389,7 +414,7 @@ function Services() {
                 <h3 className="font-heading text-lg font-bold text-white mb-3">{service.title}</h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-5">{service.description}</p>
                 <a
-                  href={WHATSAPP_LINK}
+                  href={WA_SERVICE}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-gold text-sm font-semibold hover:gap-3 gap-2 transition-all"
@@ -411,21 +436,21 @@ function Testimonials() {
       name: 'John D.',
       role: 'Affiliate Marketer',
       text: 'I earned my first ₦50,000 in just 2 weeks! Wisdom\'s training is practical and easy to follow. Best decision I ever made.',
-      rating: 5,
+      rating: 4,
       initials: 'JD',
     },
     {
       name: 'Amina K.',
       role: 'Student & Earner',
       text: 'Before joining, I was skeptical. But after 1 month, I was already earning ₦100,000+ monthly. The support is incredible!',
-      rating: 5,
+      rating: 3,
       initials: 'AK',
     },
     {
       name: 'Emeka O.',
       role: 'Full-time Affiliate',
       text: 'I quit my 9-5 job because of this program. Now I earn more in a week than I used to earn in a month. Thank you, Wisdom!',
-      rating: 5,
+      rating: 4,
       initials: 'EO',
     },
   ];
@@ -464,18 +489,32 @@ function Testimonials() {
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} size={18} className="text-gold fill-gold" />
                 ))}
+                {[...Array(5 - testimonial.rating)].map((_, i) => (
+                  <Star key={`empty-${i}`} size={18} className="text-white/20" />
+                ))}
               </div>
 
               <p className="text-white/80 leading-relaxed mb-6 italic">"{testimonial.text}"</p>
 
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center">
-                  <span className="text-dark font-bold text-sm">{testimonial.initials}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center">
+                    <span className="text-dark font-bold text-sm">{testimonial.initials}</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold">{testimonial.name}</p>
+                    <p className="text-white/50 text-sm">{testimonial.role}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white font-semibold">{testimonial.name}</p>
-                  <p className="text-white/50 text-sm">{testimonial.role}</p>
-                </div>
+                <a
+                  href={WA_TESTIMONIAL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gold hover:text-gold-light transition-colors"
+                  title="Join like this student"
+                >
+                  <ArrowRight size={20} />
+                </a>
               </div>
             </div>
           ))}
@@ -524,7 +563,7 @@ function ContactSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href={WHATSAPP_LINK}
+              href={WA_CONTACT}
               target="_blank"
               rel="noopener noreferrer"
               className="whatsapp-btn text-white font-bold px-10 py-4 rounded-full text-lg flex items-center space-x-3 shadow-xl"
@@ -532,14 +571,30 @@ function ContactSection() {
               <MessageCircle size={24} />
               <span>Chat on WhatsApp</span>
             </a>
+            <a
+              href={`tel:${PHONE_INTL}`}
+              className="bg-gold text-dark font-bold px-10 py-4 rounded-full text-lg flex items-center space-x-3 shadow-xl hover:opacity-90 transition-opacity animate-pulse-gold"
+            >
+              <PhoneCall size={24} />
+              <span>Call Now</span>
+            </a>
           </div>
 
           {/* Phone number */}
-          <div className="mt-8 flex items-center justify-center space-x-2">
-            <Phone size={18} className="text-gold" />
-            <a href="tel:07037291509" className="text-white/80 hover:text-gold transition-colors text-lg font-semibold">
-              07037291509
-            </a>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex items-center space-x-2">
+              <Phone size={18} className="text-gold" />
+              <a href={`tel:${PHONE_INTL}`} className="text-white/80 hover:text-gold transition-colors text-lg font-semibold">
+                {PHONE_NUMBER}
+              </a>
+            </div>
+            <span className="hidden sm:block text-white/30">|</span>
+            <div className="flex items-center space-x-2">
+              <MessageCircle size={18} className="text-green-400" />
+              <a href={WA_CONTACT} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-green-400 transition-colors text-lg font-semibold">
+                WhatsApp Us
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -586,7 +641,7 @@ function Footer() {
             <h4 className="font-heading font-semibold text-white mb-4">Connect With Us</h4>
             <div className="flex space-x-4 mb-4">
               <a
-                href={WHATSAPP_LINK}
+                href={WA_FOOTER}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold/20 hover:text-gold transition-all text-white/70"
@@ -602,15 +657,21 @@ function Footer() {
                 <Instagram size={18} />
               </a>
               <a
-                href="tel:07037291509"
+                href={`tel:${PHONE_INTL}`}
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold/20 hover:text-gold transition-all text-white/70"
               >
                 <Phone size={18} />
               </a>
             </div>
-            <p className="text-white/50 text-sm">
+            <p className="text-white/50 text-sm mb-1">
               <Phone size={14} className="inline mr-2" />
-              07037291509
+              {PHONE_NUMBER}
+            </p>
+            <p className="text-white/50 text-sm">
+              <MessageCircle size={14} className="inline mr-2 text-green-400" />
+              <a href={WA_FOOTER} target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors">
+                Chat on WhatsApp
+              </a>
             </p>
           </div>
         </div>
@@ -626,6 +687,32 @@ function Footer() {
   );
 }
 
+// Floating Action Buttons (WhatsApp + Call)
+function FloatingButtons() {
+  return (
+    <div className="fixed bottom-6 right-6 z-40 flex flex-col space-y-3">
+      {/* Call Button */}
+      <a
+        href={`tel:${PHONE_INTL}`}
+        className="w-14 h-14 rounded-full bg-gold text-dark flex items-center justify-center shadow-lg shadow-gold/30 hover:scale-110 transition-transform"
+        title="Call us directly"
+      >
+        <PhoneCall size={24} />
+      </a>
+      {/* WhatsApp Button */}
+      <a
+        href={WA_CONTACT}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-500/30 hover:scale-110 transition-transform"
+        title="Chat on WhatsApp"
+      >
+        <MessageCircle size={24} />
+      </a>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
@@ -637,6 +724,7 @@ export default function App() {
       <Testimonials />
       <ContactSection />
       <Footer />
+      <FloatingButtons />
     </div>
   );
 }
